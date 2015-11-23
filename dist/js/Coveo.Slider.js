@@ -4,6 +4,12 @@
 var Slider = (function () {
     function Slider(options) {
         var _this = this;
+        if (options.slider && _.isUndefined(options.min) && options.slider.attr('min')) {
+            options.min = parseFloat(options.slider.attr('min'));
+        }
+        if (options.slider && _.isUndefined(options.max) && options.slider.attr('max')) {
+            options.max = parseFloat(options.slider.attr('max'));
+        }
         this.options = _.defaults(options, this.defaults());
         this.$el = this.options.slider;
         this._uid = ++Slider._uid;
@@ -47,14 +53,22 @@ var Slider = (function () {
         styleElement.html([webkit, firefox, ie].join(''));
     };
     Object.defineProperty(Slider.prototype, "value", {
-        get: function () {
-            return parseFloat(this.$el.val());
-        },
+        get: function () { return parseFloat(this.$el.val()); },
         set: function (value) {
             var minOfValueAndMax = Math.min(value, this.options.max);
             var maxOfValueAndMin = Math.max(minOfValueAndMax, this.options.min);
             this.$el.val(maxOfValueAndMin);
         },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Slider.prototype, "min", {
+        get: function () { return parseFloat(this.$el.attr('min')); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Slider.prototype, "max", {
+        get: function () { return parseFloat(this.$el.attr('max')); },
         enumerable: true,
         configurable: true
     });

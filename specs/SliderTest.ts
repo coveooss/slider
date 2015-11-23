@@ -13,8 +13,11 @@ describe('Coveo Slider', () => {
 
     describe('Initialized on a JQuery element', () => {
         var $input: JQuery;
+        var min = 100;
+        var max = 1000;
+        var initialValue = 500;
         beforeEach(() => {
-            $input = $('<input type="range" class="coveo-input-slider" min="1" max="100" value="50">');
+            $input = $(`<input type="range" class="coveo-input-slider" min="${min}" max="${max}" value="${initialValue}">`);
             $('body').append($input);
         });
 
@@ -50,6 +53,14 @@ describe('Coveo Slider', () => {
             $input.slider();
 
             expect($input.prevAll(selector).length).toBe(1);
+        });
+
+        it('should use the element min/max/value', () => {
+            $input.slider();
+            var slider = $input.data().slider;
+            expect(slider.min).toEqual(min);
+            expect(slider.max).toEqual(max);
+            expect(slider.value).toEqual(initialValue);
         });
     });
 

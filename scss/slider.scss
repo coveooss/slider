@@ -5,7 +5,6 @@ $coveo-input-slider-thumb-border: #e4e4e4;
 
 input[type=range].coveo-input-slider {
   width: 100%;
-  max-width: 500px;
 
   -webkit-appearance: none;
 }
@@ -18,7 +17,6 @@ input[type=range].coveo-input-slider:focus {
 input[type=range].coveo-input-slider::-webkit-slider-runnable-track {
   width: 100%;
   height: 7px;
-  max-width: 500px;
 
   background: $coveo-input-slider-track-default;
   border: none;
@@ -40,7 +38,6 @@ input[type=range].coveo-input-slider::-webkit-slider-thumb {
 input[type=range].coveo-input-slider::-moz-range-track {
   width: 100%;
   height: 7px;
-  max-width: 500px;
 
   background: $coveo-input-slider-track-default;
   border: none;
@@ -60,7 +57,6 @@ input[type=range].coveo-input-slider::-moz-range-thumb {
 input[type=range].coveo-input-slider::-ms-track {
   width: 100%;
   height: 7px;
-  max-width: 500px;
 
   color: transparent;
 

@@ -26,5 +26,7 @@ declare class Slider {
     update(): void;
     private updateSliderColors(value);
     value: number;
+    min: number;
+    max: number;
     destroy(elem: JQuery): void;
 }

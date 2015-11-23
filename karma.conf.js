@@ -13,7 +13,7 @@ module.exports = function (config) {
             ignoreSkipped: true
         },
         preprocessors: {
-            './dist/Coveo.Slider.js': 'coverage'
+            './dist/js/Coveo.Slider.js': 'coverage'
         },
         coverageReporter: {
             dir: './coverage/',

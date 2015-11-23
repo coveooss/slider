@@ -16,6 +16,13 @@ class Slider {
     static _uid = 0;
 
     constructor(options: SliderOptions) {
+        if (options.slider && _.isUndefined(options.min) && options.slider.attr('min')) {
+            options.min = parseFloat(options.slider.attr('min'));
+        }
+        if (options.slider && _.isUndefined(options.max) && options.slider.attr('max')) {
+            options.max = parseFloat(options.slider.attr('max'));
+        }
+
         this.options = _.defaults(options, this.defaults());
         this.$el = this.options.slider;
         this._uid = ++Slider._uid;
@@ -66,15 +73,17 @@ class Slider {
         styleElement.html([webkit, firefox, ie].join(''));
     }
 
-    get value(): number {
-        return parseFloat(this.$el.val());
-    }
+    get value(): number { return parseFloat(this.$el.val()); }
 
     set value(value: number) {
         var minOfValueAndMax = Math.min(value, this.options.max);
         var maxOfValueAndMin = Math.max(minOfValueAndMax, this.options.min);
         this.$el.val(maxOfValueAndMin);
     }
+
+    get min(): number {return parseFloat(this.$el.attr('min')); }
+
+    get max(): number {return parseFloat(this.$el.attr('max')); }
 
     destroy(elem: JQuery) {
         this.$el.prev('.' + Slider.StyleElementClass).remove();
