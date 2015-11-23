@@ -3,8 +3,9 @@ module.exports = function (config) {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
-            './dist/Coveo.Slider.Dependencies.js',
-            './dist/Coveo.Slider.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js',
+            './dist/js/Coveo.Slider.js',
             './specs/**/*.js'
         ],
         reporters: ['mocha', 'coverage'],

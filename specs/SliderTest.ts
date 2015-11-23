@@ -1,7 +1,7 @@
 /// <reference path="../typings/jquery/jquery.d.ts" />
 /// <reference path="../typings/underscore/underscore.d.ts" />
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
-/// <reference path="../dist/Slider.d.ts" />
+/// <reference path="../dist/js/Slider.d.ts" />
 
 describe('Coveo Slider', () => {
     var inputSelector = `input[type="range"].${Slider.InputElementClass}`;

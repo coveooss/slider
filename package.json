@@ -43,10 +43,7 @@
     "phantomjs": "1.9.18",
     "typescript": "1.6.2"
   },
-  "dependencies": {
-    "jquery": "2.1.4",
-    "underscore": "1.8.3"
-  },
+  "dependencies": {},
   "files": [
     "dist",
     "scss/**/*.scss",

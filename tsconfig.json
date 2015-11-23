@@ -3,7 +3,7 @@
     "declarationFiles": true,
     "noExternalResolve": true,
     "target": "ES5",
-    "outDir": "./dist/",
+    "outDir": "./dist/js/",
     "noEmitOnError": false,
     "noEmitHelpers": true
   }
