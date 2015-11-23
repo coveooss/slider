@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "declarationFiles": true,
+    "noExternalResolve": true,
+    "target": "ES5",
+    "outDir": "./dist/",
+    "noEmitOnError": false,
+    "noEmitHelpers": true
+  }
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="Coveo.Slider.Dependencies.js"></script>
+    <script src="Coveo.Slider.js"></script>
+    <style>
+        input[type=range].coveo-input-slider {
+            width: 100%;
+            max-width: 500px;
+            -webkit-appearance: none; }
+
+        input[type=range].coveo-input-slider:focus {
+            outline: none; }
+
+        input[type=range].coveo-input-slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 7px;
+            max-width: 500px;
+            background: #dddddd;
+            border: none; }
+
+        input[type=range].coveo-input-slider::-webkit-slider-thumb {
+            width: 20px;
+            height: 20px;
+            margin-top: -6px;
+            -webkit-appearance: none;
+            background: #f5f5f5;
+            background: -webkit-linear-gradient(bottom left, #f5f5f5 50%, #ffffff 50%);
+            background: linear-gradient(to top right, #f5f5f5 50%, #ffffff 50%);
+            border: 1px solid #e4e4e4;
+            border-radius: 50%; }
+
+        input[type=range].coveo-input-slider::-moz-range-track {
+            width: 100%;
+            height: 7px;
+            max-width: 500px;
+            background: #dddddd;
+            border: none; }
+
+        input[type=range].coveo-input-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #f5f5f5;
+            background: linear-gradient(to top right, #f5f5f5 50%, #ffffff 50%);
+            border: 1px solid #e4e4e4;
+            border-radius: 50%; }
+
+        input[type=range].coveo-input-slider::-ms-track {
+            width: 100%;
+            height: 7px;
+            max-width: 500px;
+            color: transparent;
+            background: transparent;
+            border-color: transparent;
+            border-width: 8px 0; }
+
+        input[type=range].coveo-input-slider::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background: #f5f5f5;
+            background: linear-gradient(to top right, #f5f5f5 50%, #ffffff 50%);
+            border: 1px solid #e4e4e4;
+            border-radius: 50%; }
+
+        input[type=range].coveo-input-slider::-ms-tooltip {
+            display: none;
+            visibility: hidden; }
+    </style>
+</head>
+<div id="selector"></div>
+<button id="destroy">Destroy</button><button id="active">Active</button>
+<script>
+    $(document).ready(function () {
+        $('#selector').slider({
+            min: 0,
+            max: 25,
+            value: 12.5
+        });
+
+        var active = true;
+        $('#destroy').click(function() {
+            $('#destroy').prop('disabled', true);
+            $('#active').prop('disabled', false);
+            $('#selector').slider('destroy');
+            //$('#selector').data('slider').destroy();
+        });
+
+        $('#active').click(function() {
+            console.log($('#selector').data());
+            console.log($('#selector').get(0).outerHTML);
+            $('#destroy').prop('disabled', false);
+            $('#active').prop('disabled', true);
+            $('#selector').slider({
+                value: 25,
+                min: 0,
+                max: 50
+            });
+        });
+    });
+</script>
+</body>
+</html>
