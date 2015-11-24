@@ -1,3 +1,8 @@
+[![Build Status](https://img.shields.io/travis/coveo/styleguide.svg?style=flat-square)](https://travis-ci.org/coveo/slider)
+[![Coverage Status](https://coveralls.io/repos/coveo/slider/badge.svg?style=flat-square&branch=master&service=github)](https://coveralls.io/github/coveo/slider?branch=master)
+[![dev-dependencies](https://img.shields.io/david/dev/coveo/styleguide.svg?style=flat-square)](https://github.com/coveo/slider/blob/master/package.json)
+[![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/coveo/slider/blob/master/LICENSE)
+
 # Coveo Slider
 Coveo Slider is an enhanced HTML5 input range. 
 

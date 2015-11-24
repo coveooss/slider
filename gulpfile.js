@@ -15,7 +15,9 @@ var csscomb = require('gulp-csscomb');
 
 
 var tslintConfig = require('./tslint.js').configuration;
+var karmaConfig = require('./karma.conf.js').configuration;
 
+var isCIBuild = process.env.CI;
 
 gulp.task('ts:lint', function () {
     return gulp.src('./src/**/*.ts')
@@ -52,9 +54,13 @@ gulp.task('ts', ['ts:compile', 'ts:lint'], function () {
 
 
 gulp.task('test', ['test:compile'], function () {
-    new karma({
+    var config = {
         configFile: __dirname + '/karma.conf.js'
-    }).start();
+    };
+    if (isCIBuild) {
+        config.reporters = karmaConfig.reporters.push('coveralls');
+    }
+    new karma(config).start();
 });
 
 var tsTestProject = typescript.createProject({
