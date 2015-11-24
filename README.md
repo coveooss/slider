@@ -6,9 +6,9 @@
 # Coveo Slider
 Coveo Slider is an enhanced HTML5 input range. 
 
-It's available on npm `npm install coveo-slider`
+It's available on npm `npm install coveo-slider`.
 
-This project is still its early stage and feature will be added when needed
+>This project is still its early stage and feature will be added when needed.
 
 ##Dependencies
 You need to include [jQuery](https://jquery.com/) and [Underscore](http://underscorejs.org/) for this to work.
@@ -18,7 +18,8 @@ Make sure you have Node JS and NPM installed.
 Run `npm install` to get the required dependencies.
 
 ### Building
-To build the project simply run `npm start` or `gulp` if you have gulp installed as a global dependency.
+The project rely on some definition files provided by [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) and use `tsd` to install them. You can install `tsd` globally if you want by running `npm install -g tsd`. You can also run `npm run compile` once. It will download the definition file.
+Afterward you can use `gulp` if you have gulp installed as a global dependency to recompile the project and run the tests.
 
 ### Test locally
 Feel free to modify the index.html file in the dist folder to test your feature.
