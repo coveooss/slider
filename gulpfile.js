@@ -15,8 +15,6 @@ var csscomb = require('gulp-csscomb');
 
 
 var tslintConfig = require('./tslint.js').configuration;
-var karmaConfig = require('./karma.conf.js').configuration;
-
 var isCIBuild = process.env.CI;
 
 gulp.task('ts:lint', function () {
@@ -57,9 +55,11 @@ gulp.task('test', ['test:compile'], function () {
     var config = {
         configFile: __dirname + '/karma.conf.js'
     };
+
     if (isCIBuild) {
-        config.reporters = karmaConfig.reporters.push('coveralls');
+        config.reporters = ['mocha', 'coverage', 'coveralls'];
     }
+
     new karma(config).start();
 });
 

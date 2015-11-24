@@ -30,7 +30,6 @@ var configuration = {
     browsers: ['PhantomJS'],
     singleRun: true
 };
-exports.configuration = configuration;
 module.exports = function (config) {
     config.set(configuration);
 };
