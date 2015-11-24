@@ -1,6 +1,11 @@
 /// <reference path="../typings/jquery/jquery.d.ts" />
 /// <reference path="../typings/underscore/underscore.d.ts" />
 /// <reference path="Slider.d.ts" />
+var SliderMethods = {
+    Destroy: 'destroy',
+    Update: 'update'
+};
+
 class Slider {
     private colors: Colors;
     private options: SliderOptions;
@@ -46,7 +51,7 @@ class Slider {
     }
 
     update() {
-        var value = (this.value / this.options.max) * 100;
+        var value = ((this.value - this.min) / (this.max - this.min)) * 100;
         this.updateSliderColors(value);
     }
 
@@ -119,8 +124,11 @@ class Slider {
             } else if (_.isString(opts)) {
                 validateAndCreateElements($this, slider.value);
                 switch (<string>opts) {
-                    case 'destroy':
+                    case SliderMethods.Destroy:
                         slider.destroy($this);
+                        break;
+                    case SliderMethods.Update:
+                        slider.update();
                         break;
                     default:
                         break;

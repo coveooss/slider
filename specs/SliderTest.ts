@@ -11,6 +11,15 @@ describe('Coveo Slider', () => {
         expect($('body').slider).toBeDefined();
     });
 
+    it('should not throw', () => {
+        expect(() => $('#nonExistingElement').slider()).not.toThrow();
+    });
+
+    it('should return the same JQuery elements', () => {
+        var element = $('#nonExistingElement');
+        expect(element.slider()).toEqual(jasmine.objectContaining(element));
+    });
+
     describe('Initialized on a JQuery element', () => {
         var $input: JQuery;
         var min = 100;
@@ -23,6 +32,11 @@ describe('Coveo Slider', () => {
 
         afterEach(() => {
             $('body').empty();
+        });
+
+        it('should be possible to chain calls', () => {
+            expect(() => $input.slider().slider('destroy').slider()).not.toThrow();
+            expect($input.data().slider instanceof Slider).toBe(true);
         });
 
         it('should put the slider instance in the element data', () => {
@@ -44,15 +58,14 @@ describe('Coveo Slider', () => {
         });
 
         it('should not add a style tag if the previous element is one', () => {
-            var selector = `style.${Slider.StyleElementClass}`;
             var $el = $('<style />', {type: 'text/css', class: Slider.StyleElementClass});
             $input.before($el);
 
-            expect($input.prevAll(selector).length).toBe(1);
+            expect($input.prevAll(styleSelector).length).toBe(1);
 
             $input.slider();
 
-            expect($input.prevAll(selector).length).toBe(1);
+            expect($input.prevAll(styleSelector).length).toBe(1);
         });
 
         it('should use the element min/max/value', () => {
@@ -61,6 +74,34 @@ describe('Coveo Slider', () => {
             expect(slider.min).toEqual(min);
             expect(slider.max).toEqual(max);
             expect(slider.value).toEqual(initialValue);
+        });
+
+        it('should correclty set the percentage', () => {
+            $input.slider();
+            var expectedPercentage = (initialValue - min) / (max - min) * 100;
+            expect($input.prevAll(styleSelector).html()).toContain(expectedPercentage + '%');
+        });
+
+        it('should be updatable', () => {
+            $input.slider();
+            var percentage = (initialValue - min) / (max - min) * 100;
+
+            $input.attr('min', min + 5);
+            $input.attr('max', max - 5);
+
+            expect($input.prevAll(styleSelector).html()).toContain(percentage + '%', 'Precondition failed');
+
+            expect(() => $input.slider('update')).not.toThrow();
+
+            expect($input.prevAll(styleSelector).html()).not.toContain(percentage + '%');
+        });
+
+        it('should be destroyable', () => {
+            $input.slider();
+
+            expect($input.prevAll(styleSelector).length).toBe(1);
+            expect(() => $input.slider('destroy')).not.toThrow();
+            expect($input.prevAll(styleSelector).length).toBe(0);
         });
     });
 
@@ -180,17 +221,6 @@ describe('Coveo Slider', () => {
 
             expect(() => $el.slider('this is not a method')).not.toThrow();
             expect($el.data('slider')).toEqual(expected);
-        });
-
-        it('should be destroyable', () => {
-            expect($el.children(styleSelector).length).toBe(1);
-
-            expect(() => $el.slider('destroy')).not.toThrow();
-
-            expect($el.children(styleSelector).length).toBe(0);
-
-            //recreate the slider for the other tests
-            $el.slider();
         });
     });
 });

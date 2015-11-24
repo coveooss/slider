@@ -14,10 +14,6 @@ notifications:
     on_success: never
     on_failure: never
 
-before_script:
-  - npm install -g tsd
-
 script:
- - tsd install
  - npm run compile
  - npm run test
