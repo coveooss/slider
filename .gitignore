@@ -8,3 +8,5 @@ node_modules/
 typings/
 
 specs/**/*.js
+
+npm-debug.log
