@@ -4,8 +4,10 @@
 /// <reference path="../dist/js/Slider.d.ts" />
 
 describe('Coveo Slider', () => {
-    var inputSelector = `input[type="range"].${Slider.InputElementClass}`;
-    var styleSelector = `style.${Slider.StyleElementClass}`;
+    var inputSelector = `input[type="range"].${Slider.InputClass}`;
+    var styleSelector = `style.${Slider.StyleClass}`;
+    var tickContainerSelector = `div.${Slider.TickContainerClass}`;
+    var labelContainerSelector = `div.${Slider.LabelContainerClass}`;
 
     it('should exists on JQuery elements', () => {
         expect($('body').slider).toBeDefined();
@@ -34,6 +36,11 @@ describe('Coveo Slider', () => {
             $('body').empty();
         });
 
+        it('should be possible to initialize in disabled state', () => {
+            expect(() => $input.slider({disabled: true})).not.toThrow();
+            expect($input.prop('disabled')).toBe(true);
+        });
+
         it('should be possible to chain calls', () => {
             expect(() => $input.slider().slider('destroy').slider()).not.toThrow();
             expect($input.data().slider instanceof Slider).toBe(true);
@@ -49,7 +56,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should add a style tag if the previous element is not one', () => {
-            var selector = `style.${Slider.StyleElementClass}`;
+            var selector = `style.${Slider.StyleClass}`;
             expect($input.prevAll(selector).length).toBe(0);
 
             $input.slider();
@@ -58,7 +65,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should not add a style tag if the previous element is one', () => {
-            var $el = $('<style />', {type: 'text/css', class: Slider.StyleElementClass});
+            var $el = $('<style />', {type: 'text/css', class: Slider.StyleClass});
             $input.before($el);
 
             expect($input.prevAll(styleSelector).length).toBe(1);
@@ -96,12 +103,139 @@ describe('Coveo Slider', () => {
             expect($input.prevAll(styleSelector).html()).not.toContain(percentage + '%');
         });
 
+        it('should be possible to disable and enable', () => {
+            $input.slider();
+
+            expect($input.prop('disabled')).toBe(false);
+
+            expect(() => $input.slider('disable')).not.toThrow();
+            expect($input.prop('disabled')).toBe(true);
+
+            expect(() => $input.slider('disable')).not.toThrow();
+            expect($input.prop('disabled')).toBe(true);
+
+            expect(() => $input.slider('enable')).not.toThrow();
+            expect($input.prop('disabled')).toBe(false);
+
+            expect(() => $input.slider('enable')).not.toThrow();
+            expect($input.prop('disabled')).toBe(false);
+        });
+
         it('should be destroyable', () => {
             $input.slider();
 
             expect($input.prevAll(styleSelector).length).toBe(1);
             expect(() => $input.slider('destroy')).not.toThrow();
             expect($input.prevAll(styleSelector).length).toBe(0);
+        });
+
+        it('should not throw when the slider is destroyed', () => {
+            $input.slider().slider('destroy');
+            expect(() => $input.slider('destroy')).not.toThrow();
+        });
+
+        it('should call onSlide when the slider slide', () => {
+            var expected = {cb: (slider) => {}};
+            var spy = spyOn(expected, 'cb');
+            $input.slider({onSlide: expected.cb});
+
+            expect(spy.calls.count()).toBe(0);
+            $input.trigger(jQuery.Event('input'), 50);
+            expect(spy.calls.count()).toBe(1);
+        });
+
+        describe('Ticks', () => {
+            it('should be possible to initialize with "ticks: true"', () => {
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({ticks: true})).not.toThrow();
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(1);
+            });
+
+            it('should not build ticks when "ticks: false"', () => {
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({ticks: false})).not.toThrow();
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(0);
+            });
+
+            it('should be possible to initialize with some ticks index', () => {
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({ticks: [min, min + 100, min + 200]})).not.toThrow();
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(1);
+                expect($input.nextAll('.' + Slider.TickContainerClass).children().length).toBe(3);
+            });
+
+            it('should not create ticks when the list is empty', () => {
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({ticks: []})).not.toThrow();
+                expect($input.nextAll('.' + Slider.TickContainerClass).length).toBe(0);
+            });
+
+            it('should not add the tick container if one of the next element is one', () => {
+                var $el = $('<div />', {class: Slider.TickContainerClass});
+                $input.after($el);
+
+                expect($input.nextAll(tickContainerSelector).length).toBe(1);
+
+                $input.slider({ticks: true});
+
+                expect($input.nextAll(tickContainerSelector).length).toBe(1);
+            });
+        });
+
+        describe('Labels', () => {
+            it('should be possible to initialize with "labels: true"', () => {
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({labels: true})).not.toThrow();
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(1);
+            });
+
+            it('should not build labels when "labels: false"', () => {
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({labels: false})).not.toThrow();
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0);
+            });
+
+            it('should be possible to initialize with some labels index', () => {
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({labels: [min, min + 100, min + 200]})).not.toThrow();
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(1);
+                expect($input.nextAll('.' + Slider.LabelContainerClass).children().length).toBe(3);
+            });
+
+            it('should be possible to initialize with label objects', () => {
+                var expected = 'test';
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({labels: [{index: 0, label: expected}, 50, 100]})).not.toThrow();
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(1);
+                expect($input.nextAll('.' + Slider.LabelContainerClass).children().length).toBe(3);
+                expect($input.nextAll('.' + Slider.LabelContainerClass).children().first().text()).toEqual(expected);
+            });
+
+            it('should not create labels when the list is empty', () => {
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $input.slider({labels: []})).not.toThrow();
+                expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0);
+            });
+
+            it('should not add the label container if one of the next element is one', () => {
+                var $el = $('<div />', {class: Slider.LabelContainerClass});
+                $input.after($el);
+
+                expect($input.nextAll(labelContainerSelector).length).toBe(1);
+
+                $input.slider({labels: true});
+
+                expect($input.nextAll(labelContainerSelector).length).toBe(1);
+            });
         });
     });
 
@@ -136,7 +270,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should not add a style tag if it contains one', () => {
-            var $style = $('<style />', {type: 'text/css', class: Slider.StyleElementClass});
+            var $style = $('<style />', {type: 'text/css', class: Slider.StyleClass});
             $el.append($style);
 
             expect($el.children(styleSelector).length).toBe(1);
@@ -147,7 +281,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should not add an input tag if it contains one', () => {
-            var $input = $('<input />', {type: 'range', class: Slider.InputElementClass, value: Slider.DefaultValue});
+            var $input = $('<input />', {type: 'range', class: Slider.InputClass, value: Slider.DefaultValue});
             $el.append($input);
 
             expect($el.children(inputSelector).length).toBe(1);
@@ -155,6 +289,140 @@ describe('Coveo Slider', () => {
             $el.slider();
 
             expect($el.children(inputSelector).length).toBe(1);
+        });
+
+        describe('Ticks', () => {
+            it('should be possible to initialize with "ticks: true"', () => {
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({ticks: true})).not.toThrow();
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(1);
+            });
+
+            it('should not build ticks when "ticks: false"', () => {
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({ticks: false})).not.toThrow();
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(0);
+            });
+
+            it('should be possible to initialize with some ticks index', () => {
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({ticks: [0, 50, 100]})).not.toThrow();
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(1);
+                expect($el.children('.' + Slider.TickContainerClass).children().length).toBe(3);
+            });
+
+            it('should not create ticks when the list is empty', () => {
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({ticks: []})).not.toThrow();
+                expect($el.children('.' + Slider.TickContainerClass).length).toBe(0);
+            });
+
+            it('should not add the tick container if one of the next element is one', () => {
+                var $container = $('<div />', {class: Slider.TickContainerClass});
+                $el.append($container);
+
+                expect($el.children(tickContainerSelector).length).toBe(1);
+
+                $el.slider({ticks: true});
+
+                expect($el.children(tickContainerSelector).length).toBe(1);
+            });
+
+            it('should not throw if the ticks container is removed', () => {
+                $el.slider({ticks: true});
+
+                expect($el.children(tickContainerSelector).length).toBe(1);
+
+                $el.children(tickContainerSelector).remove();
+
+                expect(() => $el.slider('update')).not.toThrow();
+            });
+
+            it('should not throw if a tick is removed', () => {
+                $el.slider({ticks: true});
+
+                expect($el.children(tickContainerSelector).length).toBe(1);
+
+                $el.children(tickContainerSelector).children().first().remove();
+
+                expect(() => $el.slider('update')).not.toThrow();
+            });
+        });
+
+        describe('Labels', () => {
+            it('should be possible to initialize with "labels: true"', () => {
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({labels: true})).not.toThrow();
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(1);
+            });
+
+            it('should not build labels when "labels: false"', () => {
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({labels: false})).not.toThrow();
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0);
+            });
+
+            it('should be possible to initialize with some labels index', () => {
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({labels: [0, 50, 100]})).not.toThrow();
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(1);
+                expect($el.children('.' + Slider.LabelContainerClass).children().length).toBe(3);
+            });
+
+            it('should be possible to initialize with label objects', () => {
+                var expected = 'test';
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({labels: [{index: 0, label: expected}, 50, 100]})).not.toThrow();
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(1);
+                expect($el.children('.' + Slider.LabelContainerClass).children().length).toBe(3);
+                expect($el.children('.' + Slider.LabelContainerClass).children().first().text()).toEqual(expected);
+            });
+
+            it('should not create labels when the list is empty', () => {
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
+
+                expect(() => $el.slider({labels: []})).not.toThrow();
+                expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0);
+            });
+
+            it('should not add the label container if one of the next element is one', () => {
+                var $container = $('<div />', {class: Slider.LabelContainerClass});
+                $el.append($container);
+
+                expect($el.children(labelContainerSelector).length).toBe(1);
+
+                $el.slider({labels: true});
+
+                expect($el.children(labelContainerSelector).length).toBe(1);
+            });
+
+            it('should not throw if the labels container is removed', () => {
+                $el.slider({labels: true});
+
+                expect($el.children(labelContainerSelector).length).toBe(1);
+
+                $el.children(labelContainerSelector).remove();
+
+                expect(() => $el.slider('update')).not.toThrow();
+            });
+
+            it('should not throw if a label is removed', () => {
+                $el.slider({labels: true});
+
+                expect($el.children(labelContainerSelector).length).toBe(1);
+
+                $el.children(labelContainerSelector).children().first().remove();
+
+                expect(() => $el.slider('update')).not.toThrow();
+            });
         });
     });
 
