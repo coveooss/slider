@@ -52,6 +52,7 @@
     "dist",
     "scss/**/*.scss",
     "src/**/*.ts",
+    "tsd.json",
     "gulpfile.js",
     "LICENSE"
   ]
