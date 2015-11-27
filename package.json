@@ -1,6 +1,6 @@
 {
   "name": "coveo-slider",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "Coveo's enhanced slider component using HTML5 input range",
   "keywords": [
     "coveo",
