@@ -10,7 +10,8 @@
   ],
   "main": "",
   "scripts": {
-    "compile": "node ./node_modules/tsd/build/cli.js install && node ./node_modules/gulp/bin/gulp.js ts sass",
+    "postinstall": "tsd install",
+    "compile": "node ./node_modules/gulp/bin/gulp.js ts sass",
     "test": "node ./node_modules/gulp/bin/gulp.js test"
   },
   "author": "Coveo",
@@ -42,10 +43,11 @@
     "karma-phantomjs-launcher": "0.2.1",
     "merge2": "0.3.6",
     "phantomjs": "1.9.18",
-    "tsd": "^0.6.5",
     "typescript": "1.6.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "tsd": "^0.6.5"
+  },
   "files": [
     "dist",
     "scss/**/*.scss",
