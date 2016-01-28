@@ -4,11 +4,11 @@
 [![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/coveo/slider/blob/master/LICENSE)
 
 # Coveo Slider
-Coveo Slider is an enhanced HTML5 input range. 
+Coveo Slider is an enhanced HTML5 input range.
 
 It's available on npm `npm install coveo-slider`.
 
->This project is still its early stage and feature will be added when needed.
+>This project is still its early stage and features will be added when needed.
 
 ##Dependencies
 You need to include [jQuery](https://jquery.com/) and [Underscore](http://underscorejs.org/) for this to work.
@@ -16,6 +16,7 @@ You need to include [jQuery](https://jquery.com/) and [Underscore](http://unders
 ## Contributing
 Make sure you have Node JS and NPM installed.
 Run `npm install` to get the required dependencies.
+Run `tsd install` to get the typescript definitions for the dependencies.
 
 ### Building
 The project rely on some definition files provided by [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) and use `tsd` to install them. You can install `tsd` globally if you want by running `npm install -g tsd`. You can also run `npm run compile` once. It will download the definition file.
