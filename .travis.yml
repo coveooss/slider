@@ -15,6 +15,5 @@ notifications:
     on_failure: never
 
 script:
- - tsd install
  - npm run compile
  - npm run test

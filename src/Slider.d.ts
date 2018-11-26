@@ -1,5 +1,3 @@
-/// <reference path="../typings/jquery/jquery.d.ts" />
-
 interface Colors {
     lower: string;
     upper: string;
@@ -45,5 +43,5 @@ interface ParsedSliderOptions {
 }
 
 interface JQuery {
-    slider(opts?: SliderOptions|number): JQuery;
+    slider(opts?: SliderOptions|string|number): JQuery;
 }

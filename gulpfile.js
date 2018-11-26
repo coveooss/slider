@@ -1,38 +1,24 @@
-var autoprefixer = require('gulp-autoprefixer');
-var concat = require('gulp-concat');
-var gulp = require('gulp');
-var karma = require('karma').Server;
-var merge = require('merge2');
-var minifyCSS = require('gulp-minify-css');
-var rename = require('gulp-rename');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var tslint = require('gulp-tslint');
-var typescript = require('gulp-typescript');
-var uglify = require('gulp-uglify');
+const autoprefixer = require('gulp-autoprefixer');
+const concat = require('gulp-concat');
+const gulp = require('gulp');
+const karma = require('karma').Server;
+const merge = require('merge2');
+const rename = require('gulp-rename');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const typescript = require('gulp-typescript');
+const uglify = require('gulp-uglify');
 
-var csscomb = require('gulp-csscomb');
+const csscomb = require('gulp-csscomb');
+const isCIBuild = process.env.CI;
 
+const tsProject = typescript.createProject('tsconfig.json');
 
-var tslintConfig = require('./tslint.js').configuration;
-var isCIBuild = process.env.CI;
-
-gulp.task('ts:lint', function () {
-    return gulp.src('./src/**/*.ts')
-        .pipe(tslint({configuration: tslintConfig}))
-        .pipe(tslint.report('prose', {
-            summarizeFailureOutput: false
-        }));
-});
-
-var tsProject = typescript.createProject('tsconfig.json', {typescript: require('typescript')});
 gulp.task('ts:compile', function () {
-    var tsResult = gulp.src([
-        './typings/**/*.d.ts',
-        '!./typings/tsd.d.ts',
+    const tsResult = gulp.src([
         './src/**/*.ts'])
         .pipe(sourcemaps.init())
-        .pipe(typescript(tsProject));
+        .pipe(tsProject());
 
     return merge([
         tsResult.js
@@ -43,29 +29,16 @@ gulp.task('ts:compile', function () {
             .pipe(gulp.dest('./dist/js/'))
     ]);
 });
-gulp.task('ts', ['ts:compile', 'ts:lint'], function () {
-    gulp.src('./dist/js/Coveo.Slider.js')
+
+gulp.task('ts', gulp.series('ts:compile', function () {
+    return gulp.src('./dist/js/Coveo.Slider.js')
         .pipe(uglify())
         .pipe(rename('Coveo.Slider.min.js'))
         .pipe(gulp.dest('./dist/js/'))
-});
+}));
 
-
-gulp.task('test', ['test:compile'], function () {
-    var config = {
-        configFile: __dirname + '/karma.conf.js'
-    };
-
-    if (isCIBuild) {
-        config.reporters = ['mocha', 'coverage', 'coveralls'];
-    }
-
-    new karma(config).start();
-});
-
-var tsTestProject = typescript.createProject({
+const tsTestProject = typescript.createProject({
     declarationFiles: false,
-    noExternalResolve: true,
     target: 'ES5',
     outDir: 'specs',
     noEmitOnError: false
@@ -74,17 +47,33 @@ var tsTestProject = typescript.createProject({
 gulp.task('test:compile', function () {
     return merge([
         gulp.src([
-            '!./typings/tsd.d.ts',
-            './typings/**/*.d.ts',
             './dist/js/Slider.d.ts',
             './src/Slider.d.ts',
             './specs/**/*.ts'], {cwd: './'})
-            .pipe(typescript(tsTestProject))
+            .pipe(tsTestProject())
             .pipe(gulp.dest('./specs'))
     ]);
 });
 
-gulp.task('sass', ['sass:format'], function () {
+gulp.task('test', gulp.series('test:compile', function (done) {
+    const config = {
+        configFile: __dirname + '/karma.conf.js'
+    };
+
+    if (isCIBuild) {
+        config.reporters = ['mocha', 'coverage', 'coveralls'];
+    }
+
+    new karma(config).start().then(done);
+}));
+
+gulp.task('sass:format', function () {
+    return gulp.src(['./scss/**/*.scss'])
+        .pipe(csscomb())
+        .pipe(gulp.dest('./scss'));
+});
+
+gulp.task('sass', gulp.series('sass:format', function () {
     return gulp.src(['./scss/**/*.scss'])
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
@@ -94,14 +83,7 @@ gulp.task('sass', ['sass:format'], function () {
         .pipe(rename('Coveo.Slider.css'))
         .pipe(sourcemaps.write('../css'))
         .pipe(gulp.dest('./dist/css'))
-});
-
-gulp.task('sass:format', function () {
-    return gulp.src(['./scss/**/*.scss'])
-        .pipe(csscomb())
-        .pipe(gulp.dest('./scss'));
-});
-
+}));
 
 gulp.task('watch', function () {
     gulp.watch('./src/**/*.ts', ['ts']);
@@ -109,5 +91,4 @@ gulp.task('watch', function () {
     gulp.watch('./scss/**/*.scss', ['sass']);
 });
 
-gulp.task('default', ['ts', 'sass', 'test'], function () {
-});
+gulp.task('default', gulp.series('ts', 'sass', 'test'));
