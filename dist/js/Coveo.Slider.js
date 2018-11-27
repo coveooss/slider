@@ -1,5 +1,3 @@
-/// <reference path="../typings/jquery/jquery.d.ts" />
-/// <reference path="../typings/underscore/underscore.d.ts" />
 /// <reference path="Slider.d.ts" />
 var CoveoSliderMethods = {
     Destroy: 'destroy',
@@ -7,7 +5,7 @@ var CoveoSliderMethods = {
     Enable: 'enable',
     Update: 'update'
 };
-var Slider = (function () {
+var Slider = /** @class */ (function () {
     function Slider(options) {
         var _this = this;
         if (options.slider && _.isUndefined(options.min) && options.slider.attr('min')) {
@@ -104,14 +102,14 @@ var Slider = (function () {
         var colors = this.options.colors;
         var gradient = "background: linear-gradient(to right, " + colors.lower + " " + value + "%, " + colors.upper + " " + value + "%);";
         var selector = "." + Slider.InputClass + "[data-uid='" + this._uid + "']";
-        var webkit = [("input[type=\"range\"]" + selector + "::-webkit-slider-runnable-track {"), gradient, '}'].join('');
-        var firefox = [("input[type=\"range\"]" + selector + "::-moz-range-track {"), gradient, '}'].join('');
+        var webkit = ["input[type=\"range\"]" + selector + "::-webkit-slider-runnable-track {", gradient, '}'].join('');
+        var firefox = ["input[type=\"range\"]" + selector + "::-moz-range-track {", gradient, '}'].join('');
         var ie = [
-            ("input[type=\"range\"]" + selector + "::-ms-fill-lower {"),
+            "input[type=\"range\"]" + selector + "::-ms-fill-lower {",
             'background: ',
             this.options.colors.lower,
             '}',
-            ("input[type=\"range\"]" + selector + "::-ms-fill-upper {"),
+            "input[type=\"range\"]" + selector + "::-ms-fill-upper {",
             'background: ',
             this.options.colors.upper,
             '}'
@@ -167,7 +165,7 @@ var Slider = (function () {
     Slider.DefaultValue = 50;
     Slider._uid = 0;
     return Slider;
-})();
+}());
 +function ($) {
     'use strict';
     var createStyleElement = function () { return $('<style />', { type: 'text/css', class: Slider.StyleClass }); };
@@ -209,7 +207,7 @@ var Slider = (function () {
                 slider.update();
             }
             else if (_.isString(opts)) {
-                validateAndCreateElements($this, slider.value);
+                validateAndCreateElements($this, {});
                 switch (opts) {
                     case CoveoSliderMethods.Destroy:
                         slider.destroy($this);

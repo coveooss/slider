@@ -1,5 +1,3 @@
-/// <reference path="../../typings/jquery/jquery.d.ts" />
-/// <reference path="../../typings/underscore/underscore.d.ts" />
 /// <reference path="../../src/Slider.d.ts" />
 declare var CoveoSliderMethods: {
     Destroy: string;
@@ -23,15 +21,15 @@ declare class Slider {
     static DefaultValue: number;
     static _uid: number;
     constructor(options: SliderOptions);
-    private onInput();
-    private onChange();
+    private onInput;
+    private onChange;
     defaults(colors?: Colors): ParsedSliderOptions;
     update(): void;
-    private positionElements();
-    private updateSliderColors(value);
+    private positionElements;
+    private updateSliderColors;
     value: number;
-    min: number;
-    max: number;
+    readonly min: number;
+    readonly max: number;
     disable(): void;
     enable(): void;
     destroy(elem: JQuery): void;
