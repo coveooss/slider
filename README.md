@@ -16,11 +16,9 @@ You need to include [jQuery](https://jquery.com/) and [Underscore](http://unders
 ## Contributing
 Make sure you have Node JS and NPM installed.
 Run `npm install` to get the required dependencies.
-Run `tsd install` to get the typescript definitions for the dependencies.
 
 ### Building
-The project rely on some definition files provided by [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) and use `tsd` to install them. You can install `tsd` globally if you want by running `npm install -g tsd`. You can also run `npm run compile` once. It will download the definition file.
-Afterward you can use `gulp` if you have gulp installed as a global dependency to recompile the project and run the tests.
+You can use `gulp` if you have gulp installed as a global dependency to recompile the project and run the tests.
 
 ### Test locally
 Feel free to modify the index.html file in the dist folder to test your feature.

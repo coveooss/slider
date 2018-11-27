@@ -8,10 +8,11 @@
     "range",
     "html5"
   ],
-  "main": "",
+  "main": "dist/js/Coveo.Slider.js",
   "scripts": {
     "compile": "node ./node_modules/gulp/bin/gulp.js ts sass",
-    "test": "node ./node_modules/gulp/bin/gulp.js test"
+    "test": "node ./node_modules/gulp/bin/gulp.js test",
+    "lintfix": "node node_modules/tsjs --all --exclude dist"
   },
   "author": "Coveo",
   "license": "MIT",
@@ -20,38 +21,35 @@
     "url": "https://github.com/coveo/slider.git"
   },
   "devDependencies": {
-    "gulp": "3.9.0",
-    "gulp-autoprefixer": "3.1.0",
-    "gulp-concat": "2.6.0",
-    "gulp-csscomb": "3.0.6",
-    "gulp-minify-css": "1.2.1",
-    "gulp-rename": "1.2.2",
-    "gulp-sass": "2.1.0",
-    "gulp-scss-lint": "0.3.8",
-    "gulp-sourcemaps": "1.6.0",
-    "gulp-tslint": "3.6.0",
-    "gulp-typescript": "2.9.2",
-    "gulp-uglify": "1.5.1",
-    "jasmine-core": "2.3.4",
-    "karma": "0.13.19",
-    "karma-chrome-launcher": "0.2.1",
-    "karma-coverage": "0.5.3",
-    "karma-coveralls": "1.1.2",
-    "karma-jasmine": "0.3.6",
-    "karma-mocha-reporter": "1.1.1",
-    "karma-phantomjs-launcher": "0.2.1",
-    "merge2": "0.3.6",
-    "phantomjs": "1.9.18",
-    "typescript": "1.6.2"
-  },
-  "dependencies": {
-    "tsd": "^0.6.5"
+    "@types/jasmine": "3.3.0",
+    "@types/jquery": "2.0.46",
+    "@types/underscore": "1.8.9",
+    "gulp": "4.0.0",
+    "gulp-autoprefixer": "6.0.0",
+    "gulp-concat": "2.6.1",
+    "gulp-csscomb": "3.0.8",
+    "gulp-minify-css": "1.2.4",
+    "gulp-rename": "1.4.0",
+    "gulp-sass": "4.0.2",
+    "gulp-scss-lint": "0.7.1",
+    "gulp-sourcemaps": "2.6.4",
+    "gulp-typescript": "4.0.2",
+    "gulp-uglify": "3.0.1",
+    "jasmine-core": "3.3.0",
+    "karma": "3.1.1",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-coverage": "1.1.2",
+    "karma-coveralls": "2.1.0",
+    "karma-jasmine": "2.0.1",
+    "karma-mocha-reporter": "2.2.5",
+    "merge2": "1.2.3",
+    "tsjs": "0.6.x",
+    "typescript": "3.1.6"
   },
   "files": [
     "dist",
     "scss/**/*.scss",
     "src/**/*.ts",
-    "tsd.json",
     "gulpfile.js",
     "LICENSE"
   ]

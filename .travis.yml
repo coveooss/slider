@@ -3,7 +3,10 @@ sudo: false
 language: node_js
 
 node_js:
-  - '4.1'
+  - '10.13'
+
+addons:
+  chrome: stable
 
 cache:
   directories:
@@ -15,6 +18,5 @@ notifications:
     on_failure: never
 
 script:
- - tsd install
  - npm run compile
  - npm run test

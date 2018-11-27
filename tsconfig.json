@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "declarationFiles": true,
-    "noExternalResolve": true,
+    "declaration": true,
     "target": "ES5",
     "outDir": "./dist/js/",
     "noEmitOnError": false,

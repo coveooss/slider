@@ -1,6 +1,5 @@
-/// <reference path="../typings/jquery/jquery.d.ts" />
-/// <reference path="../typings/underscore/underscore.d.ts" />
 /// <reference path="Slider.d.ts" />
+
 var CoveoSliderMethods = {
     Destroy: 'destroy',
     Disable: 'disable',
@@ -231,7 +230,7 @@ class Slider {
                 validateAndCreateElements($this, {value: slider.value});
                 slider.update();
             } else if (_.isString(opts)) {
-                validateAndCreateElements($this, slider.value);
+                validateAndCreateElements($this, {});
                 switch (<string>opts) {
                     case CoveoSliderMethods.Destroy:
                         slider.destroy($this);

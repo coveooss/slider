@@ -27,7 +27,13 @@ var configuration = {
     port: 9876,
     colors: true,
     autoWatch: true,
-    browsers: ['PhantomJS'],
+    browsers: ['ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+        ChromeHeadlessNoSandbox: {
+            base: 'ChromeHeadless',
+            flags: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
+    },
     singleRun: true
 };
 module.exports = function (config) {
