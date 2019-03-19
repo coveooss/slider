@@ -1,10 +1,10 @@
 /// <reference path="Slider.d.ts" />
 
-var CoveoSliderMethods = {
+let CoveoSliderMethods = {
     Destroy: 'destroy',
     Disable: 'disable',
     Enable: 'enable',
-    Update: 'update'
+    Update: 'update',
 };
 
 class Slider {
@@ -40,7 +40,7 @@ class Slider {
             'data-uid': this._uid,
             max: this.options.max,
             min: this.options.min,
-            step: this.options.step
+            step: this.options.step,
         });
 
         this.$el.on('input', () => this.onInput());
@@ -55,12 +55,12 @@ class Slider {
 
     private onInput() {
         this.update();
-        this.options.onSlide(this)
+        this.options.onSlide(this);
     }
 
     private onChange() {
         this.update();
-        this.options.onChange(this)
+        this.options.onChange(this);
     }
 
     defaults(colors?: Colors): ParsedSliderOptions {
@@ -76,29 +76,29 @@ class Slider {
             onInit: _.noop,
             onSlide: _.noop,
             onChange: _.noop,
-            onDestroy: _.noop
+            onDestroy: _.noop,
         };
     }
 
     update() {
-        var value = ((this.value - this.min) / (this.max - this.min)) * 100;
+        const value = ((this.value - this.min) / (this.max - this.min)) * 100;
         this.updateSliderColors(value);
         this.positionElements();
     }
 
     private positionElements() {
         if (this.options.labels && this.options.labels.length) {
-            var $container = this.$el.nextAll('.' + Slider.LabelContainerClass);
+            const $container = this.$el.nextAll('.' + Slider.LabelContainerClass);
             if ($container && $container.length) {
-                var numberOfTicks = (this.max - this.min) / this.options.step;
+                const numberOfTicks = (this.max - this.min) / this.options.step;
                 _.each(this.options.labels, (label: Label) => {
-                    var $el = $container.find(`.${Slider.LabelClass}[data-index="${label.index}"]`);
+                    const $el = $container.find(`.${Slider.LabelClass}[data-index="${label.index}"]`);
                     if ($el && $el.length) {
-                        var offsetForMiddle = $el.width() / $container.width() * 100 / 2;
-                        var offset = (label.index - this.options.min) / this.options.step / numberOfTicks;
+                        const offsetForMiddle = $el.width() / $container.width() * 100 / 2;
+                        const offset = (label.index - this.options.min) / this.options.step / numberOfTicks;
                         $el.css({
                             'left': (offset * 100 - offsetForMiddle) + '%',
-                            'margin-left': (offset * -1 * this.options.thumbWidth + (this.options.thumbWidth / 2)) + 'px'
+                            'margin-left': (offset * -1 * this.options.thumbWidth + (this.options.thumbWidth / 2)) + 'px',
                         });
                     }
                 });
@@ -106,18 +106,18 @@ class Slider {
         }
 
         if (this.options.ticks && this.options.ticks.length) {
-            var $container = this.$el.nextAll('.' + Slider.TickContainerClass);
+            const $container = this.$el.nextAll('.' + Slider.TickContainerClass);
             if ($container && $container.length) {
-                var numberOfTicks = (this.max - this.min) / this.options.step;
+                const numberOfTicks = (this.max - this.min) / this.options.step;
                 _.each(this.options.ticks, (tick: number) => {
-                    var $el = $container.find(`.${Slider.TickClass}[data-index="${tick}"]`);
+                    const $el = $container.find(`.${Slider.TickClass}[data-index="${tick}"]`);
                     if ($el && $el.length) {
-                        var index = (tick - this.min) / this.options.step;
-                        var offset = index / numberOfTicks;
+                        const index = (tick - this.min) / this.options.step;
+                        const offset = index / numberOfTicks;
                         $el.css({
                             left: (offset * 100) + '%',
                             'margin-left': offset * -1 * this.options.thumbWidth + 'px',
-                            background: tick < this.value ? this.options.colors.lower : this.options.colors.upper
+                            background: tick < this.value ? this.options.colors.lower : this.options.colors.upper,
                         });
                     }
                 });
@@ -126,15 +126,15 @@ class Slider {
     }
 
     private updateSliderColors(value: number) {
-        var styleElement = this.$el.prev('.' + Slider.StyleClass);
-        var colors = this.options.colors;
-        var gradient = `background: linear-gradient(to right, ${colors.lower} ${value}%, ${colors.upper} ${value}%);`;
+        const styleElement = this.$el.prev('.' + Slider.StyleClass);
+        const colors = this.options.colors;
+        const gradient = `background: linear-gradient(to right, ${colors.lower} ${value}%, ${colors.upper} ${value}%);`;
 
-        var selector = `.${Slider.InputClass}[data-uid='${this._uid}']`;
+        const selector = `.${Slider.InputClass}[data-uid='${this._uid}']`;
 
-        var webkit = [`input[type="range"]${selector}::-webkit-slider-runnable-track {`, gradient, '}'].join('');
-        var firefox = [`input[type="range"]${selector}::-moz-range-track {`, gradient, '}'].join('');
-        var ie = [
+        const webkit = [`input[type="range"]${selector}::-webkit-slider-runnable-track {`, gradient, '}'].join('');
+        const firefox = [`input[type="range"]${selector}::-moz-range-track {`, gradient, '}'].join('');
+        const ie = [
             `input[type="range"]${selector}::-ms-fill-lower {`,
             'background: ',
             this.options.colors.lower,
@@ -142,23 +142,23 @@ class Slider {
             `input[type="range"]${selector}::-ms-fill-upper {`,
             'background: ',
             this.options.colors.upper,
-            '}'
+            '}',
         ].join('');
 
         styleElement.html([webkit, firefox, ie].join(''));
     }
 
-    get value(): number { return parseFloat(this.$el.val()); }
+    get value(): number {return parseFloat(this.$el.val());}
 
     set value(value: number) {
-        var minOfValueAndMax = Math.min(value, this.max);
-        var maxOfValueAndMin = Math.max(minOfValueAndMax, this.min);
+        const minOfValueAndMax = Math.min(value, this.max);
+        const maxOfValueAndMin = Math.max(minOfValueAndMax, this.min);
         this.$el.val(maxOfValueAndMin);
     }
 
-    get min(): number {return parseFloat(this.$el.attr('min')); }
+    get min(): number {return parseFloat(this.$el.attr('min'));}
 
-    get max(): number {return parseFloat(this.$el.attr('max')); }
+    get max(): number {return parseFloat(this.$el.attr('max'));}
 
     disable() {
         this.$el.prop('disabled', true);
@@ -184,54 +184,54 @@ class Slider {
     }
 }
 
-+function ($) {
++function($) {
     'use strict';
 
-    var createStyleElement = () => $('<style />', {type: 'text/css', class: Slider.StyleClass});
-    var createInputElement = (value: number, disabled: boolean) => $('<input />',
+    const createStyleElement = () => $('<style />', {type: 'text/css', class: Slider.StyleClass});
+    const createInputElement = (value: number, disabled: boolean) => $('<input />',
         {type: 'range', class: Slider.InputClass, value: value}).prop('disabled', disabled);
-    var createTickContainer = () => $('<div />', {class: Slider.TickContainerClass});
-    var createLabelContainer = () => $('<div />', {class: Slider.LabelContainerClass});
-    var createLabelElements = (container: JQuery, labels: Label[]) => {
+    const createTickContainer = () => $('<div />', {class: Slider.TickContainerClass});
+    const createLabelContainer = () => $('<div />', {class: Slider.LabelContainerClass});
+    const createLabelElements = (container: JQuery, labels: Label[]) => {
         _.chain(labels)
             .sortBy((label: Label) => label.index)
             .each((label: Label) => {
-                var $el = $('<div />', {
+                const $el = $('<div />', {
                     class: Slider.LabelClass,
                     text: label.label || label.index,
-                    'data-index': label.index
+                    'data-index': label.index,
                 });
-                container.append($el)
+                container.append($el);
             });
     };
 
-    var createTickElements = (container: JQuery, ticks: number[]) => {
+    const createTickElements = (container: JQuery, ticks: number[]) => {
         _.chain(ticks)
             .sortBy(_.identity)
             .each((tick: number) => {
-                var $el = $('<div />', {class: Slider.TickClass, 'data-index': tick});
-                container.append($el)
+                const $el = $('<div />', {class: Slider.TickClass, 'data-index': tick});
+                container.append($el);
             });
     };
 
-    $.fn.slider = function (opts?: SliderOptions|number|string) {
-        var $this = $(this);
+    $.fn.slider = function(opts?: SliderOptions | number | string) {
+        const $this = $(this);
         opts = opts || {slider: $this};
-        var slider: Slider = $this.data('slider');
+        let slider: Slider = $this.data('slider');
 
         if (_.isNumber(opts)) {
-            opts = {value: <number>opts};
+            opts = {value: opts as number};
         }
 
         if (slider && slider instanceof Slider) {
-            var slider: Slider = $this.data('slider');
-            if (opts && !_.isUndefined((<SliderOptions>opts).value)) {
-                slider.value = (<SliderOptions>opts).value;
+            const slider: Slider = $this.data('slider');
+            if (opts && !_.isUndefined((opts as SliderOptions).value)) {
+                slider.value = (opts as SliderOptions).value;
                 validateAndCreateElements($this, {value: slider.value});
                 slider.update();
             } else if (_.isString(opts)) {
                 validateAndCreateElements($this, {});
-                switch (<string>opts) {
+                switch (opts as string) {
                     case CoveoSliderMethods.Destroy:
                         slider.destroy($this);
                         break;
@@ -248,14 +248,14 @@ class Slider {
                         break;
                 }
             } else {
-                //no param. update
+                // no param. update
                 validateAndCreateElements($this, {value: slider.value});
                 slider.update();
             }
         } else if (!_.isString(opts) && !_.isNumber(opts)) {
-            var sliderOptions = <SliderOptions>opts;
+            const sliderOptions = opts as SliderOptions;
 
-            var elements = validateAndCreateElements($this, sliderOptions);
+            const elements = validateAndCreateElements($this, sliderOptions);
             sliderOptions.slider = elements.input;
 
             slider = new Slider(sliderOptions);
@@ -270,8 +270,8 @@ class Slider {
     };
 
     function validateAndCreateElements($el: JQuery, opts?: SliderOptions) {
-        var style: JQuery;
-        var input: JQuery;
+        let style: JQuery;
+        let input: JQuery;
         if ($el.is('input[type="range"]')) {
             input = $el;
             input.prop('disabled', opts.disabled === true);
@@ -283,10 +283,10 @@ class Slider {
             }
 
             if (opts && opts.ticks) {
-                var ticksContainer = $el.nextAll('.' + Slider.TickContainerClass);
-                var ticks: number[] = _.isBoolean(opts.ticks) && opts.ticks ? _.range(opts.min || 0, (opts.max || 100) + (opts.step || 1),
+                let ticksContainer = $el.nextAll('.' + Slider.TickContainerClass);
+                const ticks: number[] = _.isBoolean(opts.ticks) && opts.ticks ? _.range(opts.min || 0, (opts.max || 100) + (opts.step || 1),
                     opts.step || 1)
-                    : <number[]>opts.ticks;
+                    : opts.ticks as number[];
                 opts.ticks = ticks;
                 if (ticks && ticks.length) {
                     if (ticksContainer.length == 0) {
@@ -298,23 +298,23 @@ class Slider {
             }
 
             if (opts && opts.labels) {
-                var labelsContainer = $el.nextAll('.' + Slider.LabelContainerClass);
-                var labels: Array<number|Label> = _.isBoolean(opts.labels) && opts.labels ? _.range(opts.min || 0,
-                    (opts.max || 100) + (opts.step || 1), opts.step || 1) : <Label[]>opts.labels;
+                let labelsContainer = $el.nextAll('.' + Slider.LabelContainerClass);
+                let labels: Array<number | Label> = _.isBoolean(opts.labels) && opts.labels ? _.range(opts.min || 0,
+                    (opts.max || 100) + (opts.step || 1), opts.step || 1) : opts.labels as Label[];
 
                 if (labels && labels.length) {
-                    labels = _.map(labels, (label: number|Label): Label => _.isNumber(label) ? <Label>{index: label} : <Label>label);
+                    labels = _.map(labels, (label: number | Label): Label => _.isNumber(label) ? {index: label} as Label : label as Label);
 
                     if (labelsContainer.length == 0) {
                         labelsContainer = createLabelContainer();
                     }
-                    createLabelElements(labelsContainer, <Label[]>labels);
+                    createLabelElements(labelsContainer, labels as Label[]);
                     $el.after(labelsContainer);
                 }
-                opts.labels = <Label[]>labels;
+                opts.labels = labels as Label[];
             }
         } else {
-            //assume container
+            // assume container
             style = $el.children('style.' + Slider.StyleClass);
             if (style.length == 0) {
                 style = createStyleElement();
@@ -331,10 +331,10 @@ class Slider {
             }
 
             if (opts && opts.ticks) {
-                var ticksContainer = $el.children('.' + Slider.TickContainerClass);
-                var ticks: number[] = _.isBoolean(opts.ticks) && opts.ticks ? _.range(opts.min || 0, (opts.max || 100) + (opts.step || 1),
+                let ticksContainer = $el.children('.' + Slider.TickContainerClass);
+                const ticks: number[] = _.isBoolean(opts.ticks) && opts.ticks ? _.range(opts.min || 0, (opts.max || 100) + (opts.step || 1),
                     opts.step || 1)
-                    : <number[]>opts.ticks;
+                    : opts.ticks as number[];
                 opts.ticks = ticks;
                 if (ticks && ticks.length) {
                     if (ticksContainer.length == 0) {
@@ -346,25 +346,25 @@ class Slider {
             }
 
             if (opts && opts.labels) {
-                var labelsContainer = $el.children('.' + Slider.LabelContainerClass);
-                var labels: Array<number|Label> = _.isBoolean(opts.labels) && opts.labels ? _.range(opts.min || 0,
-                    (opts.max || 100) + (opts.step || 1), opts.step || 1) : <Label[]>opts.labels;
+                let labelsContainer = $el.children('.' + Slider.LabelContainerClass);
+                let labels: Array<number | Label> = _.isBoolean(opts.labels) && opts.labels ? _.range(opts.min || 0,
+                    (opts.max || 100) + (opts.step || 1), opts.step || 1) : opts.labels as Label[];
 
                 if (labels && labels.length) {
-                    labels = _.map(labels, (label: number|Label): Label => _.isNumber(label) ? <Label>{index: label} : <Label>label);
+                    labels = _.map(labels, (label: number | Label): Label => _.isNumber(label) ? {index: label} as Label : label as Label);
 
                     if (labelsContainer.length == 0) {
                         labelsContainer = createLabelContainer();
                     }
-                    createLabelElements(labelsContainer, <Label[]>labels);
+                    createLabelElements(labelsContainer, labels as Label[]);
                     $el.append(labelsContainer);
                 }
-                opts.labels = <Label[]>labels;
+                opts.labels = labels as Label[];
             }
         }
         return {
             input: input,
-            style: style
+            style: style,
         };
     }
 }(jQuery);

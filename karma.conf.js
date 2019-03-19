@@ -1,18 +1,18 @@
-var configuration = {
+let configuration = {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
         'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js',
         './dist/js/Coveo.Slider.js',
-        './specs/**/*.js'
+        './specs/**/*.js',
     ],
     reporters: ['mocha', 'coverage'],
     mochaReporter: {
-        ignoreSkipped: true
+        ignoreSkipped: true,
     },
     preprocessors: {
-        './dist/js/Coveo.Slider.js': ['coverage']
+        './dist/js/Coveo.Slider.js': ['coverage'],
     },
     coverageReporter: {
         dir: './coverage/',
@@ -21,8 +21,8 @@ var configuration = {
             {type: 'html', subdir: '.'},
             {type: 'cobertura', subdir: '.', file: 'cobertura.txt'},
             {type: 'text-summary'},
-            {type: 'lcov', subdir: 'lcov'}
-        ]
+            {type: 'lcov', subdir: 'lcov'},
+        ],
     },
     port: 9876,
     colors: true,
@@ -34,8 +34,8 @@ var configuration = {
             flags: ['--no-sandbox', '--disable-setuid-sandbox'],
         },
     },
-    singleRun: true
+    singleRun: true,
 };
-module.exports = function (config) {
+module.exports = function(config) {
     config.set(configuration);
 };

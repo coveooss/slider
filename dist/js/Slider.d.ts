@@ -1,5 +1,5 @@
 /// <reference path="../../src/Slider.d.ts" />
-declare var CoveoSliderMethods: {
+declare let CoveoSliderMethods: {
     Destroy: string;
     Disable: string;
     Enable: string;

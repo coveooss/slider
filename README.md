@@ -10,7 +10,7 @@ It's available on npm `npm install coveo-slider`.
 
 >This project is still its early stage and features will be added when needed.
 
-##Dependencies
+## Dependencies
 You need to include [jQuery](https://jquery.com/) and [Underscore](http://underscorejs.org/) for this to work.
 
 ## Contributing
