@@ -9,12 +9,11 @@ const sourcemaps = require('gulp-sourcemaps');
 const typescript = require('gulp-typescript');
 const uglify = require('gulp-uglify');
 
-const csscomb = require('gulp-csscomb');
 const isCIBuild = process.env.CI;
 
 const tsProject = typescript.createProject('tsconfig.json');
 
-gulp.task('ts:compile', function () {
+gulp.task('ts:compile', () => {
     const tsResult = gulp.src([
         './src/**/*.ts'])
         .pipe(sourcemaps.init())
@@ -26,38 +25,40 @@ gulp.task('ts:compile', function () {
             .pipe(sourcemaps.write('./dist/js/'))
             .pipe(gulp.dest('./dist/js/')),
         tsResult.dts
-            .pipe(gulp.dest('./dist/js/'))
+            .pipe(gulp.dest('./dist/js/')),
     ]);
 });
 
-gulp.task('ts', gulp.series('ts:compile', function () {
+gulp.task('ts:minify', () => {
     return gulp.src('./dist/js/Coveo.Slider.js')
         .pipe(uglify())
         .pipe(rename('Coveo.Slider.min.js'))
-        .pipe(gulp.dest('./dist/js/'))
-}));
+        .pipe(gulp.dest('./dist/js/'));
+});
+
+gulp.task('ts', gulp.series('ts:compile', 'ts:minify'));
 
 const tsTestProject = typescript.createProject({
     declarationFiles: false,
     target: 'ES5',
     outDir: 'specs',
-    noEmitOnError: false
+    noEmitOnError: false,
 });
 
-gulp.task('test:compile', function () {
+gulp.task('test:compile', () => {
     return merge([
         gulp.src([
             './dist/js/Slider.d.ts',
             './src/Slider.d.ts',
             './specs/**/*.ts'], {cwd: './'})
             .pipe(tsTestProject())
-            .pipe(gulp.dest('./specs'))
+            .pipe(gulp.dest('./specs')),
     ]);
 });
 
-gulp.task('test', gulp.series('test:compile', function (done) {
+gulp.task('test:run', (done) => {
     const config = {
-        configFile: __dirname + '/karma.conf.js'
+        configFile: __dirname + '/karma.conf.js',
     };
 
     if (isCIBuild) {
@@ -65,30 +66,26 @@ gulp.task('test', gulp.series('test:compile', function (done) {
     }
 
     new karma(config).start().then(done);
-}));
-
-gulp.task('sass:format', function () {
-    return gulp.src(['./scss/**/*.scss'])
-        .pipe(csscomb())
-        .pipe(gulp.dest('./scss'));
 });
 
-gulp.task('sass', gulp.series('sass:format', function () {
+gulp.task('test', gulp.series('test:compile', 'test:run'));
+
+gulp.task('sass', () => {
     return gulp.src(['./scss/**/*.scss'])
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
-            browsers: ['Chrome >= 23', 'Firefox >= 21', 'Explorer >= 10', 'Opera >= 15', 'Safari >= 6']
+            browsers: ['Chrome >= 23', 'Firefox >= 21', 'Explorer >= 10', 'Opera >= 15', 'Safari >= 6'],
         }))
         .pipe(rename('Coveo.Slider.css'))
         .pipe(sourcemaps.write('../css'))
-        .pipe(gulp.dest('./dist/css'))
-}));
+        .pipe(gulp.dest('./dist/css'));
+});
 
-gulp.task('watch', function () {
-    gulp.watch('./src/**/*.ts', ['ts']);
-    gulp.watch('./test/src/**/*.ts', ['test:compile']);
-    gulp.watch('./scss/**/*.scss', ['sass']);
+gulp.task('watch', () => {
+    gulp.watch('./src/**/*.ts', gulp.series('ts'));
+    gulp.watch('./specs/**/*.ts', gulp.series('test:compile'));
+    gulp.watch('./scss/**/*.scss', gulp.series('sass'));
 });
 
 gulp.task('default', gulp.series('ts', 'sass', 'test'));

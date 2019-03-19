@@ -1,10 +1,10 @@
 /// <reference path="../dist/js/Slider.d.ts" />
 
 describe('Coveo Slider', () => {
-    var inputSelector = `input[type="range"].${Slider.InputClass}`;
-    var styleSelector = `style.${Slider.StyleClass}`;
-    var tickContainerSelector = `div.${Slider.TickContainerClass}`;
-    var labelContainerSelector = `div.${Slider.LabelContainerClass}`;
+    const inputSelector = `input[type="range"].${Slider.InputClass}`;
+    const styleSelector = `style.${Slider.StyleClass}`;
+    const tickContainerSelector = `div.${Slider.TickContainerClass}`;
+    const labelContainerSelector = `div.${Slider.LabelContainerClass}`;
 
     it('should exists on JQuery elements', () => {
         expect($('body').slider).toBeDefined();
@@ -15,15 +15,15 @@ describe('Coveo Slider', () => {
     });
 
     it('should return the same JQuery elements', () => {
-        var element = $('#nonExistingElement');
+        const element = $('#nonExistingElement');
         expect(element.slider()).toEqual(jasmine.objectContaining(element));
     });
 
     describe('Initialized on a JQuery element', () => {
-        var $input: JQuery;
-        var min = 100;
-        var max = 1000;
-        var initialValue = 500;
+        let $input: JQuery;
+        const min = 100;
+        const max = 1000;
+        const initialValue = 500;
         beforeEach(() => {
             $input = $(`<input type="range" class="coveo-input-slider" min="${min}" max="${max}" value="${initialValue}">`);
             $('body').append($input);
@@ -53,7 +53,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should add a style tag if the previous element is not one', () => {
-            var selector = `style.${Slider.StyleClass}`;
+            const selector = `style.${Slider.StyleClass}`;
             expect($input.prevAll(selector).length).toBe(0);
 
             $input.slider();
@@ -62,7 +62,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should not add a style tag if the previous element is one', () => {
-            var $el = $('<style />', {type: 'text/css', class: Slider.StyleClass});
+            const $el = $('<style />', {type: 'text/css', class: Slider.StyleClass});
             $input.before($el);
 
             expect($input.prevAll(styleSelector).length).toBe(1);
@@ -74,7 +74,7 @@ describe('Coveo Slider', () => {
 
         it('should use the element min/max/value', () => {
             $input.slider();
-            var slider = $input.data().slider;
+            const slider = $input.data().slider;
             expect(slider.min).toEqual(min);
             expect(slider.max).toEqual(max);
             expect(slider.value).toEqual(initialValue);
@@ -82,13 +82,13 @@ describe('Coveo Slider', () => {
 
         it('should correclty set the percentage', () => {
             $input.slider();
-            var expectedPercentage = (initialValue - min) / (max - min) * 100;
+            const expectedPercentage = (initialValue - min) / (max - min) * 100;
             expect($input.prevAll(styleSelector).html()).toContain(expectedPercentage + '%');
         });
 
         it('should be updatable', () => {
             $input.slider();
-            var percentage = (initialValue - min) / (max - min) * 100;
+            const percentage = (initialValue - min) / (max - min) * 100;
 
             $input.attr('min', min + 5);
             $input.attr('max', max - 5);
@@ -132,8 +132,8 @@ describe('Coveo Slider', () => {
         });
 
         it('should call onSlide when the slider slide', () => {
-            var expected = {cb: (slider) => {}};
-            var spy = spyOn(expected, 'cb');
+            const expected = {cb: (slider) => {}};
+            const spy = spyOn(expected, 'cb');
             $input.slider({onSlide: expected.cb});
 
             expect(spy.calls.count()).toBe(0);
@@ -172,7 +172,7 @@ describe('Coveo Slider', () => {
             });
 
             it('should not add the tick container if one of the next element is one', () => {
-                var $el = $('<div />', {class: Slider.TickContainerClass});
+                const $el = $('<div />', {class: Slider.TickContainerClass});
                 $input.after($el);
 
                 expect($input.nextAll(tickContainerSelector).length).toBe(1);
@@ -207,7 +207,7 @@ describe('Coveo Slider', () => {
             });
 
             it('should be possible to initialize with label objects', () => {
-                var expected = 'test';
+                const expected = 'test';
                 expect($input.nextAll('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
 
                 expect(() => $input.slider({labels: [{index: 0, label: expected}, 50, 100]})).not.toThrow();
@@ -224,7 +224,7 @@ describe('Coveo Slider', () => {
             });
 
             it('should not add the label container if one of the next element is one', () => {
-                var $el = $('<div />', {class: Slider.LabelContainerClass});
+                const $el = $('<div />', {class: Slider.LabelContainerClass});
                 $input.after($el);
 
                 expect($input.nextAll(labelContainerSelector).length).toBe(1);
@@ -237,7 +237,7 @@ describe('Coveo Slider', () => {
     });
 
     describe('With empty element', () => {
-        var $el: JQuery;
+        let $el: JQuery;
 
         beforeEach(() => {
             $el = $('<div />');
@@ -267,7 +267,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should not add a style tag if it contains one', () => {
-            var $style = $('<style />', {type: 'text/css', class: Slider.StyleClass});
+            const $style = $('<style />', {type: 'text/css', class: Slider.StyleClass});
             $el.append($style);
 
             expect($el.children(styleSelector).length).toBe(1);
@@ -278,7 +278,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should not add an input tag if it contains one', () => {
-            var $input = $('<input />', {type: 'range', class: Slider.InputClass, value: Slider.DefaultValue});
+            const $input = $('<input />', {type: 'range', class: Slider.InputClass, value: Slider.DefaultValue});
             $el.append($input);
 
             expect($el.children(inputSelector).length).toBe(1);
@@ -319,7 +319,7 @@ describe('Coveo Slider', () => {
             });
 
             it('should not add the tick container if one of the next element is one', () => {
-                var $container = $('<div />', {class: Slider.TickContainerClass});
+                const $container = $('<div />', {class: Slider.TickContainerClass});
                 $el.append($container);
 
                 expect($el.children(tickContainerSelector).length).toBe(1);
@@ -374,7 +374,7 @@ describe('Coveo Slider', () => {
             });
 
             it('should be possible to initialize with label objects', () => {
-                var expected = 'test';
+                const expected = 'test';
                 expect($el.children('.' + Slider.LabelContainerClass).length).toBe(0, 'Precondition failed');
 
                 expect(() => $el.slider({labels: [{index: 0, label: expected}, 50, 100]})).not.toThrow();
@@ -391,7 +391,7 @@ describe('Coveo Slider', () => {
             });
 
             it('should not add the label container if one of the next element is one', () => {
-                var $container = $('<div />', {class: Slider.LabelContainerClass});
+                const $container = $('<div />', {class: Slider.LabelContainerClass});
                 $el.append($container);
 
                 expect($el.children(labelContainerSelector).length).toBe(1);
@@ -424,17 +424,17 @@ describe('Coveo Slider', () => {
     });
 
     describe('With an existing slider', () => {
-        var $el: JQuery;
-        var min = 0;
-        var max = 50;
-        var initialValue = 25;
+        let $el: JQuery;
+        const min = 0;
+        const max = 50;
+        const initialValue = 25;
         beforeAll(() => {
             $el = $('<div />');
             $('body').append($el);
             $el.slider({
                 value: initialValue,
                 min: min,
-                max: max
+                max: max,
             });
         });
 
@@ -444,7 +444,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should be possible to update the value', () => {
-            var originalValue = $el.data('slider').value;
+            const originalValue = $el.data('slider').value;
 
             $el.slider(42);
 
@@ -466,7 +466,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should update the style tag when slider is changed', () => {
-            var notExpected = $el.children(styleSelector).html();
+            const notExpected = $el.children(styleSelector).html();
 
             $el.children(inputSelector).val(max - 5).change();
             expect($el.children(styleSelector).html()).not.toEqual(notExpected);
@@ -482,7 +482,7 @@ describe('Coveo Slider', () => {
         });
 
         it('should not have side effect when called with an unknown method', () => {
-            var expected = $el.data('slider');
+            const expected = $el.data('slider');
 
             expect(() => $el.slider('this is not a method')).not.toThrow();
             expect($el.data('slider')).toEqual(expected);

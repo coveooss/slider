@@ -3,7 +3,7 @@ var CoveoSliderMethods = {
     Destroy: 'destroy',
     Disable: 'disable',
     Enable: 'enable',
-    Update: 'update'
+    Update: 'update',
 };
 var Slider = /** @class */ (function () {
     function Slider(options) {
@@ -21,7 +21,7 @@ var Slider = /** @class */ (function () {
             'data-uid': this._uid,
             max: this.options.max,
             min: this.options.min,
-            step: this.options.step
+            step: this.options.step,
         });
         this.$el.on('input', function () { return _this.onInput(); });
         this.$el.on('change', function () { return _this.onChange(); });
@@ -51,7 +51,7 @@ var Slider = /** @class */ (function () {
             onInit: _.noop,
             onSlide: _.noop,
             onChange: _.noop,
-            onDestroy: _.noop
+            onDestroy: _.noop,
         };
     };
     Slider.prototype.update = function () {
@@ -62,35 +62,35 @@ var Slider = /** @class */ (function () {
     Slider.prototype.positionElements = function () {
         var _this = this;
         if (this.options.labels && this.options.labels.length) {
-            var $container = this.$el.nextAll('.' + Slider.LabelContainerClass);
-            if ($container && $container.length) {
-                var numberOfTicks = (this.max - this.min) / this.options.step;
+            var $container_1 = this.$el.nextAll('.' + Slider.LabelContainerClass);
+            if ($container_1 && $container_1.length) {
+                var numberOfTicks_1 = (this.max - this.min) / this.options.step;
                 _.each(this.options.labels, function (label) {
-                    var $el = $container.find("." + Slider.LabelClass + "[data-index=\"" + label.index + "\"]");
+                    var $el = $container_1.find("." + Slider.LabelClass + "[data-index=\"" + label.index + "\"]");
                     if ($el && $el.length) {
-                        var offsetForMiddle = $el.width() / $container.width() * 100 / 2;
-                        var offset = (label.index - _this.options.min) / _this.options.step / numberOfTicks;
+                        var offsetForMiddle = $el.width() / $container_1.width() * 100 / 2;
+                        var offset = (label.index - _this.options.min) / _this.options.step / numberOfTicks_1;
                         $el.css({
                             'left': (offset * 100 - offsetForMiddle) + '%',
-                            'margin-left': (offset * -1 * _this.options.thumbWidth + (_this.options.thumbWidth / 2)) + 'px'
+                            'margin-left': (offset * -1 * _this.options.thumbWidth + (_this.options.thumbWidth / 2)) + 'px',
                         });
                     }
                 });
             }
         }
         if (this.options.ticks && this.options.ticks.length) {
-            var $container = this.$el.nextAll('.' + Slider.TickContainerClass);
-            if ($container && $container.length) {
-                var numberOfTicks = (this.max - this.min) / this.options.step;
+            var $container_2 = this.$el.nextAll('.' + Slider.TickContainerClass);
+            if ($container_2 && $container_2.length) {
+                var numberOfTicks_2 = (this.max - this.min) / this.options.step;
                 _.each(this.options.ticks, function (tick) {
-                    var $el = $container.find("." + Slider.TickClass + "[data-index=\"" + tick + "\"]");
+                    var $el = $container_2.find("." + Slider.TickClass + "[data-index=\"" + tick + "\"]");
                     if ($el && $el.length) {
                         var index = (tick - _this.min) / _this.options.step;
-                        var offset = index / numberOfTicks;
+                        var offset = index / numberOfTicks_2;
                         $el.css({
                             left: (offset * 100) + '%',
                             'margin-left': offset * -1 * _this.options.thumbWidth + 'px',
-                            background: tick < _this.value ? _this.options.colors.lower : _this.options.colors.upper
+                            background: tick < _this.value ? _this.options.colors.lower : _this.options.colors.upper,
                         });
                     }
                 });
@@ -112,7 +112,7 @@ var Slider = /** @class */ (function () {
             "input[type=\"range\"]" + selector + "::-ms-fill-upper {",
             'background: ',
             this.options.colors.upper,
-            '}'
+            '}',
         ].join('');
         styleElement.html([webkit, firefox, ie].join(''));
     };
@@ -179,7 +179,7 @@ var Slider = /** @class */ (function () {
             var $el = $('<div />', {
                 class: Slider.LabelClass,
                 text: label.label || label.index,
-                'data-index': label.index
+                'data-index': label.index,
             });
             container.append($el);
         });
@@ -200,35 +200,35 @@ var Slider = /** @class */ (function () {
             opts = { value: opts };
         }
         if (slider && slider instanceof Slider) {
-            var slider = $this.data('slider');
+            var slider_1 = $this.data('slider');
             if (opts && !_.isUndefined(opts.value)) {
-                slider.value = opts.value;
-                validateAndCreateElements($this, { value: slider.value });
-                slider.update();
+                slider_1.value = opts.value;
+                validateAndCreateElements($this, { value: slider_1.value });
+                slider_1.update();
             }
             else if (_.isString(opts)) {
                 validateAndCreateElements($this, {});
                 switch (opts) {
                     case CoveoSliderMethods.Destroy:
-                        slider.destroy($this);
+                        slider_1.destroy($this);
                         break;
                     case CoveoSliderMethods.Disable:
-                        slider.disable();
+                        slider_1.disable();
                         break;
                     case CoveoSliderMethods.Enable:
-                        slider.enable();
+                        slider_1.enable();
                         break;
                     case CoveoSliderMethods.Update:
-                        slider.update();
+                        slider_1.update();
                         break;
                     default:
                         break;
                 }
             }
             else {
-                //no param. update
-                validateAndCreateElements($this, { value: slider.value });
-                slider.update();
+                // no param. update
+                validateAndCreateElements($this, { value: slider_1.value });
+                slider_1.update();
             }
         }
         else if (!_.isString(opts) && !_.isNumber(opts)) {
@@ -282,7 +282,7 @@ var Slider = /** @class */ (function () {
             }
         }
         else {
-            //assume container
+            // assume container
             style = $el.children('style.' + Slider.StyleClass);
             if (style.length == 0) {
                 style = createStyleElement();
@@ -325,7 +325,7 @@ var Slider = /** @class */ (function () {
         }
         return {
             input: input,
-            style: style
+            style: style,
         };
     }
 }(jQuery);

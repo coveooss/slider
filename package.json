@@ -10,9 +10,11 @@
   ],
   "main": "dist/js/Coveo.Slider.js",
   "scripts": {
-    "compile": "node ./node_modules/gulp/bin/gulp.js ts sass",
-    "test": "node ./node_modules/gulp/bin/gulp.js test",
-    "lintfix": "node node_modules/tsjs --all --exclude dist"
+    "compile": "gulp ts sass",
+    "test": "gulp test",
+    "lintfix": "npm run lint:sass && npm run lint:js",
+    "lint:sass": "csscomb scss/**",
+    "lint:js": "node node_modules/tsjs --all --exclude dist"
   },
   "author": "Coveo",
   "license": "MIT",
@@ -24,10 +26,10 @@
     "@types/jasmine": "3.3.0",
     "@types/jquery": "2.0.46",
     "@types/underscore": "1.8.9",
+    "csscomb": "4.2.0",
     "gulp": "4.0.0",
     "gulp-autoprefixer": "6.0.0",
     "gulp-concat": "2.6.1",
-    "gulp-csscomb": "3.0.8",
     "gulp-minify-css": "1.2.4",
     "gulp-rename": "1.4.0",
     "gulp-sass": "4.0.2",
@@ -43,8 +45,8 @@
     "karma-jasmine": "2.0.1",
     "karma-mocha-reporter": "2.2.5",
     "merge2": "1.2.3",
-    "tsjs": "0.6.x",
-    "typescript": "3.1.6"
+    "tsjs": "0.7.x",
+    "typescript": "3.3.3"
   },
   "files": [
     "dist",
