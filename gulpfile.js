@@ -74,9 +74,7 @@ gulp.task('sass', () => {
     return gulp.src(['./scss/**/*.scss'])
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(autoprefixer({
-            browsers: ['Chrome >= 23', 'Firefox >= 21', 'Explorer >= 10', 'Opera >= 15', 'Safari >= 6'],
-        }))
+        .pipe(autoprefixer())
         .pipe(rename('Coveo.Slider.css'))
         .pipe(sourcemaps.write('../css'))
         .pipe(gulp.dest('./dist/css'));
